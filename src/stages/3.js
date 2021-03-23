@@ -1,4 +1,5 @@
 const { bank } = require("../bank");
+const { update } = require("../controllers/botControllers");
 const { stages } = require("../stages");
 
 function execute(user , msg){
@@ -6,16 +7,19 @@ function execute(user , msg){
     if(msg === '#'){
         //bank[user].stage = 4;
         
-        bank[user].stage  = 0
+        update(user.from.substring(0 , 12) , 4)
+        //bank[user.from].stage  = 4
 
-        return ['Pedido finalizado  \n em breve estaremos entregando \n muito obrigado pela preferencia']
+        return ['Digite seu nome por favor:']
 
         
     }
     if(msg === '0'){
-        bank[user].stage = 0
+        update(user.from.substring(0 , 12) , 0)
+        //bank[user.from].stage = 0
         return ['Pedido cancelado']
     }
+    bank[user.from].adress = msg;
     return [`
         Confirma endereço de entrega: \n${msg}\n
         Digite *#* para confirmar 

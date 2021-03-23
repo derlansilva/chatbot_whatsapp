@@ -1,7 +1,8 @@
 const { menu } =  require('../menu')
-const { bank } = require('../bank')
+const { bank } = require('../bank');
+const { update } = require('../controllers/botControllers');
 
-function execute(user , msg ){
+function execute(user , msg , name){
     let message = "CARDAPIO \n\ncodigo|descrição|preço \n\n" ;
 
     Object.keys(menu).forEach(value => {
@@ -10,11 +11,10 @@ function execute(user , msg ){
         message += `${value} - ${element.description}  R$ ${element.price} \n`
     })
 
-    bank[user].stage =  1;
+    update(user.from.substring(0 , 12) , 1)
 
-    console.log(bank[user].stage)
 
-    return [message ,`Olá sou um assistente virtual\nDigite o codigo para  fazer o pedido` ]
+    return [message,`Olá ${name} sou um assistente virtual.\nDigite o codigo para  fazer o pedido` ]
 }
 
 exports.execute = execute;

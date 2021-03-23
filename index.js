@@ -1,52 +1,57 @@
 const venom = require('venom-bot')
 
-const {bank} = require('./src/bank')
 const {stages} = require('./src/stages');
-const userBot = require('./src/controllers/botControllers')
+const { index, insert } = require('./src/controllers/botControllers');
+const { bank } = require('./src/bank');
 
 venom.create().then((client) => start(client))
 
 function start(client){
     client.onMessage((message) => {
-        //console.log('mensagem' , message)
-        console.log(message.from)
+
 
         if(message.body){
-            let resp = stages[getStage(message)].obj.execute(message.from , message.body)
-            //getUser(message)
-            console.log('user' , bank)
 
-            for(let index = 0 ; index < resp.length ; index ++){
-                const element = resp[index];
-                console.log('elemento' , element)
-                client.sendText(message.from , element)
-            }
+        
+            insert(message).then(result => {
+                console.log('result' , result)
+            })
+
+            index(message.from.substring(0 ,12)).then(result => {
+                result.map(item => {  
+                    getStage(item)                       
+                    renderMessage(client , item.status  , message , message.body , item.user )
+                    
+                })
+            })
 
         }
 
     })
 }
 
-function getStage(user){
-   if(bank[user.from]){
-       return bank[user.from].stage
-       
-   }else{
-       bank[user.from] = {
-           stage : 0,
+
+function renderMessage(client , status , message , body , name){
+    let resp = stages[status].obj.execute(message , body , name )            
+
+    for(let index = 0 ; index < resp.length ; index ++){
+        const element = resp[index];
+        client.sendText(message.from , element)
+    }
+
+}
+
+
+ function getStage(user){
+    
+      bank[user.id] = {
+           stage : user.status,
+           adress : '',
+           name : '',
            itens :[]
        }
-      // userBot.save(user)
-       
-       return bank[user.from].stage
-   }
+       console.log('usuario' , bank)
+       return bank[user.id].stage
     
 }
-/*
-function getUser(user){
-    console.log('enviado para ' , user.to)
-    user.map(item => {
-        console.log( 'items' , item)
-    })
-    //console.log( 'imagem' ,  user.send.profilePicThumbObj.img)
-}*/
+
