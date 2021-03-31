@@ -1,16 +1,49 @@
 const connection = require("../models/connection");
 
-
 module.exports = {
-    save(fields , user){
+    save(user , order , value , adress , name){
         const params = [
-
+            user , 
+            order , 
+            value,
+            adress ,
+            name
         ]
         return new Promise((resolve , reject) => {
             connection.query(`
-                INSERT INTO order_food (user_id , pedido , adress , pagamento)
-                VALUES(?,?,?,?)
+                INSERT INTO food (user_id , pedido, total , adress , name )
+                VALUES(?,?,?,?,?)
             `, params ,( error , results ) => {
+                if(error){
+                    reject(error)
+                }else{
+            
+                    resolve(results)
+        
+                }
+            })
+        })
+    },
+
+    render(){
+        return new Promise((resolve , reject) => {
+            connection.query(`
+                SELECT * FROM food
+            ` , (error , results) => {
+                if(error){
+                    reject(error)
+                }else{
+                    resolve(results)
+                }
+            })
+        }) 
+    },
+
+    consult(id){
+        return new Promise((resolve , reject) => {
+            connection.query(`
+                SELECT * FROM food WHERE id_order = ${id}
+            `, (error , results) => {
                 if(error){
                     reject(error)
                 }else{

@@ -59,6 +59,22 @@ module.exports ={
                 }
             })
         })
+    },
+
+    updateName(id , user){
+        return new Promise((resolve , reject) => {
+            connection.query(
+                `
+                    UPDATE client SET user = ${user} WHERE number = ${id}
+                `
+            ,(erro , results) => {
+                if(erro){
+                    reject(erro)
+                }else{
+                    resolve(results)
+                }
+            })
+        })
     }
 
 }

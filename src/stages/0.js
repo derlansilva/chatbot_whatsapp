@@ -1,5 +1,4 @@
 const { menu } =  require('../menu')
-const { bank } = require('../bank');
 const { update } = require('../controllers/botControllers');
 
 function execute(user , msg , name){

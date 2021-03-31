@@ -1,6 +1,6 @@
 const {menu} = require('../menu')
-const {bank } = require('../bank');
 const { update } = require('../controllers/botControllers');
+const { itens } = require('../itens');
 
 function renderMenu(){
 
@@ -39,8 +39,7 @@ function execute(user , msg){
                 `codigo invalido\nEscolha alguma opção do Cardapio\n${renderMenu()}\n ou Digite *#* para Finalizar o pedido \nou *0* para cancelar`
                 ]
     }
-    //update(user.from.substring(0 , 12) , 2)
-    //bank[user.from].itens.push(menu[msg])
+    itens.push(menu[msg])
     return [
              `Item *${menu[msg].description}* adicionado com sucesso\nSe deseja adicionar mais algum item digite *"mais"*\nDigite *Ok* para Finalizar o pedido ou *0* para cancelar
              `

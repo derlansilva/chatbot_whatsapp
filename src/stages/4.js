@@ -1,24 +1,21 @@
 //'Pedido finalizado  em breve estaremos entregando'
-const {insert, index } =  require('../controllers/botControllers')
-const { bank } = require("../bank")
 
-function execute (user , msg ){
+const { adress } = require("../adress");
+const { update } = require("../controllers/botControllers");
+const { updateName } = require("../controllers/botControllers");
+const { itens } = require("../itens");
 
-    bank[user.from].stage  = 0
+function execute (user , msg  , name , id){
+    itens.pop();
+    adress.pop();
+    //updateName(user.from.substring(0 , 12) , msg)
+    update(user.from.substring(0 , 12) , 0)
 
-    bank[user.from].name = msg
-
-    if(!index(user.from.substring(0 , 12))){
-
-        insert(user , msg  )
-
-    }
-
-    return [`
-    ${msg} seu       
-    Pedido finalizado  \n 
+    return [`${msg} seu     
+    Pedido foi finalizado  \n 
     em breve estaremos entregando \n 
-    muito obrigado pela preferencia']
+    assim que for enviado entraremos em contato.
+    muito obrigado pela preferencia'
     `
  ]
 
